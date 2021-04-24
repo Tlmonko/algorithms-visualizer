@@ -1,9 +1,10 @@
 import pygame
 from typing import List
+from drawing import draw_array
+import random
 
 WIDTH = 800
 HEIGHT = 600
-FPS = 60
 
 pygame.init()
 pygame.mixer.init()
@@ -11,16 +12,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("quick sort")
 clock = pygame.time.Clock()
 
-array = [5, 8, 23, 6, 9]
-
-
-def draw_array(array: List[int], rect_size: int):
-    global WIDTH, HEIGHT
-    x_coord = (WIDTH - rect_size * len(array)) // 2
-    for el in array:
-        pygame.draw.rect(screen, (100, 100, 100), (x_coord,
-                         HEIGHT - el * rect_size, rect_size, el * rect_size))
-        x_coord += rect_size
+array = [random.randint(0, 30) for x in range(40)]
+array_states = [array.copy()]
 
 
 def qsort(start_index, end_index):
@@ -31,25 +24,33 @@ def qsort(start_index, end_index):
     equals = []
     more = []
     num = array[start_index]
-    for number in array[start_index: end_index]:
+    for number in array[start_index:end_index]:
         if number < num:
             less.append(number)
         elif number == num:
             equals.append(number)
         else:
             more.append(number)
-    array[start_index: end_index] = less + equals + more
-    qsort(0, len(less))
-    qsort(len(array) - len(more), len(array))
+    array[start_index:end_index] = less + equals + more
+    array_states.append(array.copy())
+    qsort(start_index, start_index + len(less))
+    qsort(end_index - len(more), end_index)
 
 
-running = True
-while running:
-    clock.tick(FPS)
+qsort(0, len(array))
+state = 0
+FPS = len(array_states) // 6
+if not FPS:
+    FPS = 1
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            pygame.quit()
     screen.fill((255, 255, 255))
+    draw_array(array_states[state], 10, WIDTH, HEIGHT, screen)
     pygame.display.flip()
+    if state < len(array_states) - 1:
+        state += 1
+    clock.tick(FPS)
 
 pygame.quit()
