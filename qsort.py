@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("quick sort")
 clock = pygame.time.Clock()
 
-array = [random.randint(0, 30) for x in range(40)]
+array = [random.randint(0, 500) for x in range(800)]
 array_states = [[(array.copy(), 0, len(array))]]
 
 
@@ -53,7 +53,7 @@ while True:
     for el in array_states[state]:
         (arr, index_start, index_end) = el
         array_to_draw[index_start:index_end] = arr[index_start:index_end]
-    draw_array(array_to_draw, 10, WIDTH, HEIGHT, screen)
+    draw_array(array_to_draw, 1, WIDTH, HEIGHT, screen)
     pygame.display.flip()
     if state < len(array_states) - 1:
         state += 1

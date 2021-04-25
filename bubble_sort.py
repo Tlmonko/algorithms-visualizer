@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("bubble sort")
 clock = pygame.time.Clock()
 
-array = [random.randint(0, 30) for x in range(40)]
+array = [random.randint(0, 500) for x in range(800)]
 array_states = [array.copy()]
 
 
@@ -38,7 +38,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
     screen.fill((255, 255, 255))
-    draw_array(array_states[state], 10, WIDTH, HEIGHT, screen)
+    draw_array(array_states[state], 1, WIDTH, HEIGHT, screen)
     pygame.display.flip()
     if state < len(array_states) - 1:
         state += 1
